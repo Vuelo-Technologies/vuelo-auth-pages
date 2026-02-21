@@ -7,31 +7,80 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+* {
+  box-sizing: border-box;
+}
+
 body {
-  font-family: Arial;
-  background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-  color:white;
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #0f3d2e, #14532d);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: #ffffff;
 }
-.card{
-  background:rgba(255,255,255,0.08);
-  padding:40px;
-  border-radius:15px;
-  width:350px;
+
+.card {
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(15px);
+  padding: 50px 40px;
+  border-radius: 20px;
+  width: 400px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  text-align: center;
 }
-input{
-  width:100%;
-  padding:10px;
-  margin-top:10px;
+
+.logo {
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: #4ade80;
+  margin-bottom: 10px;
 }
-button{
-  margin-top:15px;
-  padding:10px;
-  width:100%;
-  cursor:pointer;
+
+h2 {
+  margin: 10px 0 30px 0;
+  font-size: 26px;
+}
+
+input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  border: none;
+  background: #22c55e;
+  color: white;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #16a34a;
+}
+
+#msg {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #bbf7d0;
+}
+
+.footer {
+  margin-top: 25px;
+  font-size: 12px;
+  opacity: 0.7;
 }
 </style>
 </head>
@@ -39,10 +88,17 @@ button{
 <body>
 
 <div class="card">
-<h2>Set New Password</h2>
-<input type="password" id="password" placeholder="New Password"/>
-<button onclick="updatePassword()">Update Password</button>
-<p id="msg"></p>
+  <div class="logo">COMMITLEDGER</div>
+  <h2>Set New Password</h2>
+
+  <input type="password" id="password" placeholder="Enter new password" />
+  <button onclick="updatePassword()">Update Password</button>
+
+  <p id="msg"></p>
+
+  <div class="footer">
+    Secure authentication powered by Vuelo Technologies
+  </div>
 </div>
 
 <script>
@@ -78,8 +134,10 @@ window.addEventListener("load", function() {
     });
 
     if (error) {
+      msg.style.color = "#fca5a5";
       msg.innerText = error.message;
     } else {
+      msg.style.color = "#86efac";
       msg.innerText = "Password updated successfully. You may close this page.";
     }
   };
