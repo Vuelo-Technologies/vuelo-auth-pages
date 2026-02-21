@@ -1,43 +1,46 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
-const client = supabase.createClient(
-  "https://mlghlxzjezzcxntbbkcc.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sZ2hseHpqZXp6Y3hudGJia2NjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzNTQzMjAsImV4cCI6MjA4NjkzMDMyMH0.V1crNIHU7j-nnEdkQ22lajampUk0nnwXtnhbFafJlRk"
-);
+document.addEventListener("DOMContentLoaded", async function () {
 
-async function initSession() {
-  const hash = window.location.hash.substring(1);
-  const params = new URLSearchParams(hash);
+  const client = supabase.createClient(
+    "https://mlghlxzjezzcxntbbkcc.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sZ2hseHpqZXp6Y3hudGJia2NjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzNTQzMjAsImV4cCI6MjA4NjkzMDMyMH0.V1crNIHU7j-nnEdkQ22lajampUk0nnwXtnhbFafJlRk"
+  );
 
-  const access_token = params.get("access_token");
-  const refresh_token = params.get("refresh_token");
-  const type = params.get("type");
+  async function initSession() {
+    const hash = window.location.hash.substring(1);
+    const params = new URLSearchParams(hash);
 
-  if (type === "recovery" && access_token && refresh_token) {
-    await client.auth.setSession({
-      access_token,
-      refresh_token
-    });
-  } else {
-    document.getElementById("msg").innerText =
-      "Invalid or expired reset link.";
+    const access_token = params.get("access_token");
+    const refresh_token = params.get("refresh_token");
+    const type = params.get("type");
+
+    if (type === "recovery" && access_token && refresh_token) {
+      await client.auth.setSession({
+        access_token,
+        refresh_token
+      });
+    } else {
+      const msg = document.getElementById("msg");
+      if (msg) msg.innerText = "Invalid or expired reset link.";
+    }
   }
-}
 
-async function updatePassword() {
-  const password = document.getElementById("password").value;
+  window.updatePassword = async function () {
+    const password = document.getElementById("password").value;
+    const msg = document.getElementById("msg");
 
-  const { error } = await client.auth.updateUser({
-    password
-  });
+    const { error } = await client.auth.updateUser({ password });
 
-  if (error) {
-    document.getElementById("msg").innerText = error.message;
-  } else {
-    document.getElementById("msg").innerText =
-      "Password updated successfully. You may close this page.";
-  }
-}
+    if (error) {
+      if (msg) msg.innerText = error.message;
+    } else {
+      if (msg) msg.innerText =
+        "Password updated successfully. You may close this page.";
+    }
+  };
 
-initSession();
+  await initSession();
+});
 </script>
